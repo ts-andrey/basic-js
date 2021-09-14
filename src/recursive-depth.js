@@ -15,30 +15,15 @@ import { NotImplementedError } from '../extensions/index.js';
 
 export default class DepthCalculator {
   calculateDepth(arr) {
-    let tempCounter = 0;
-    let finalCounter = 0;
-    const array = [];
+    let counter = 0;
+    let finalCounter = 1;
 
-    const checkElement = (el, counter) => {
-      if (Array.isArray(el)) {
-        counter++;
-        for (let i = 0; i < el.length; i++) {
-          if (Array.isArray(el[i])) {
-            checkElement(el[i], counter);
-          }
-        }
+    for (let i = 0; i < arr.length; i++) {
+      if (Array.isArray(arr[i])) {
+        const tempCounter = this.calculateDepth(arr[i]);
+        counter < tempCounter ? (counter = tempCounter) : null;
       }
-      if (counter > tempCounter) tempCounter = counter;
-    };
-
-    if (Array.isArray(arr)) {
-      finalCounter++;
-      for (let i = 0; i < arr.length; i++) {
-        tempCounter = 0;
-        checkElement(arr[i], tempCounter);
-        array.push(tempCounter);
-      }
-      return finalCounter + array.sort((a, b) => a - b).pop();
     }
+    return (finalCounter += counter);
   }
 }
